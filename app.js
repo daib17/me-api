@@ -6,7 +6,7 @@ const index = require('./routes/index');
 const hello = require('./routes/hello');
 
 const app = express();
-const port = 1337;
+const port = 8333;
 
 app.use(cors());
 
