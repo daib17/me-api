@@ -6,7 +6,7 @@ router.get('/', function(req, res) {
         data: {
             name: "Daniel Ibanez",
             city: "SC Tenerife",
-            description: "Life goes by staring at the screen."
+            description: "Life goes by while staring at the screen."
         }
     };
 

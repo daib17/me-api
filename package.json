@@ -1,7 +1,7 @@
 {
     "name": "me-api",
     "version": "1.0.0",
-    "description": "Me API for Ramverk2",
+    "description": "Me API - Ramverk2",
     "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
