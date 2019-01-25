@@ -1,10 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
     const data = {
         data: {
-            msg: "Hello World"
+            name: "Daniel Ibanez",
+            city: "SC Tenerife",
+            description: "Life goes by staring at the screen."
         }
     };
 

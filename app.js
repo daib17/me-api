@@ -3,12 +3,13 @@ const cors = require('cors');
 const morgan = require('morgan');
 
 const index = require('./routes/index');
-const hello = require('./routes/hello');
+const reports = require('./routes/reports');
 
 const app = express();
 const port = 8333;
 
 app.use(cors());
+
 
 // don't show the log when it is test
 if (process.env.NODE_ENV !== 'test') {
@@ -18,19 +19,7 @@ if (process.env.NODE_ENV !== 'test') {
 
 
 app.use('/', index);
-app.use('/hello', hello);
-
-
-
-
-// Add routes for 404 and error handling
-// Catch 404 and forward to error handler
-// Put this last
-app.use((req, res, next) => {
-    var err = new Error("Not Found");
-    err.status = 404;
-    next(err);
-});
+app.use('/reports', reports);
 
 
 // Start up server
