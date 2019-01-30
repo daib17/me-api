@@ -1,29 +1,99 @@
 var express = require('express');
 var router = express.Router();
 
-router.get('/kmom01', function(req, res) {
-    const questions = [
-        {
-            question: "Berätta utförligt om din syn på nodejs backend " +
-            "ramverk och berätta vilket ramverk du valde och varför.",
-            answer: "I don't have previous experience with Node.js frameworks, so I chose to work with Express since it seems to be a popular framework and it is also used by Emil in his API exercise for this week."
-        },
-        {
-            question: "Berätta om din katalogstruktur" +
-            " och hur du organiserade din kod, hur tänkte du?",
-            answer: "I followed the file and folder structure used in the Node.js API with Express exercise. As I explain later, I played around with express-generator, but I didn't use any scaffolding for this first assignment."
-        },
-        {
-            question: "Använde du någon form av scaffolding som ditt " + "valda ramverk erbjuder?",
-            answer: "I installed express-generator following the guide in the Express site and I created the skeleton for an application. However I am not using scaffolding for the assignment this week, since I don't fully understand how views are rendered and the differences between the engines (ejs, pug, etc.). I would need to read a bit more about it before I can begin to use it with confidence."
-        },
-        {
-            question: "Vad är din TIL för detta kmom?",
-            answer: "This week I learned I lot of new stuff. From installing and configuring the Nginx server on Digital Ocean to getting started with the Express Node.js web application framework."
-        },
-    ];
+const jwt = require('jsonwebtoken');
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('./db/texts.sqlite');
 
-    res.json({ data: questions });
+
+/* Route: Get report from database for given title */
+router.get('/:title', function(req, res) {
+    db.get("SELECT * FROM reports WHERE title = ?",
+    req.params.title,
+    (err, rows) => {
+        if (err) {
+            return res.status(500).json({
+                errors: {
+                    status: 500,
+                    source: "/reports",
+                    title: "Database error",
+                    detail: err.message
+                }
+            });
+        }
+
+        if (rows === undefined) {
+            return res.status(401).json({
+                errors: {
+                    status: 401,
+                    source: "/reports",
+                    title: "Report not found",
+                    detail: "Report with given title not found."
+                }
+            });
+        }
+
+        res.status(200).json({
+            data: {
+                message: "Report successfully read.",
+                report: rows
+            }
+        });
+    });
 });
+
+
+/* Route: add report to database */
+router.post('/',
+    (req, res, next) => checkToken(req, res, next),
+    (req, res) => addReport(req, res));
+
+
+/* Check token */
+function checkToken(req, res, next) {
+    const token = req.headers['x-access-token'];
+    jwt.verify(token, process.env.JWT_SECRET, function(err, decoded) {
+        if (err) {
+            return res.status(500).json({
+                errors: {
+                    status: 500,
+                    source: "/reports",
+                    title: "Error adding report",
+                    detail: err.message
+                }
+            });
+        }
+
+        // Valid token send on the request
+        next();
+    });
+}
+
+
+/* Add report */
+function addReport(req, res) {
+    db.run("INSERT INTO reports (title, content) VALUES (?, ?)",
+    req.body.title,
+    req.body.content,
+    (err) => {
+        if (err) {
+            return res.status(500).json({
+                errors: {
+                    status: 500,
+                    source: "/reports",
+                    title: "Database error",
+                    detail: err.message
+                }
+            });
+        }
+
+        res.status(201).json({
+            data: {
+                message: "Report successfully added."
+            }
+        });
+    });
+}
+
 
 module.exports = router;
