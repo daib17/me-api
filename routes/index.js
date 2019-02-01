@@ -6,7 +6,7 @@ router.get('/', function(req, res) {
         data: {
             name: "Daniel Ibanez",
             city: "SC Tenerife",
-            description: "Focusing on my 2nd year in web development at BTH."
+            description: "Spanjor som försöker förstå sig på Sverige. Gillar programmering och podcasts mitt i natten."
         }
     };
 

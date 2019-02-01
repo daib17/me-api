@@ -55,7 +55,7 @@ router.post('/:email/:password', function(req, res) {
             if (result) {
                 const payload = { email: user.email };
                 const secret = process.env.JWT_SECRET;
-                const jwtToken = jwt.sign(payload, secret, { expiresIn: '1h' });
+                const jwtToken = jwt.sign(payload, secret, { expiresIn: '12h' });
 
                 return res.json({
                     data: {
