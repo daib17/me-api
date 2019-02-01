@@ -34,10 +34,7 @@ router.get('/:title', function(req, res) {
         }
 
         res.status(200).json({
-            data: {
-                message: "Report successfully read.",
-                report: rows
-            }
+            data: rows
         });
     });
 });
