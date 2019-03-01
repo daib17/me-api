@@ -16,3 +16,5 @@ CREATE TABLE IF NOT EXISTS reports (
     content TEXT NOT NULL,
     UNIQUE (title)
 );
+
+

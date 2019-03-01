@@ -16,7 +16,7 @@ router.post('/:email/:password', function(req, res) {
     (err, rows) => {
         if (err) {
             return res.status(500).json({
-                errors: {
+                data: {
                     status: 500,
                     source: "/login",
                     title: "Database error",
@@ -27,7 +27,7 @@ router.post('/:email/:password', function(req, res) {
 
         if (rows === undefined) {
             return res.status(401).json({
-                errors: {
+                data: {
                     status: 401,
                     source: "/login",
                     title: "User not found",
@@ -43,7 +43,7 @@ router.post('/:email/:password', function(req, res) {
             (err, result) => {
             if (err) {
                 return res.status(500).json({
-                    errors: {
+                    data: {
                         status: 500,
                         source: "/login",
                         title: "bcrypt error",
@@ -59,6 +59,7 @@ router.post('/:email/:password', function(req, res) {
 
                 return res.json({
                     data: {
+                        status: 201,
                         type: "success",
                         message: "User logged in",
                         user: payload,
@@ -67,7 +68,7 @@ router.post('/:email/:password', function(req, res) {
                 });
             } else {
                 return res.status(401).json({
-                    errors: {
+                    data: {
                         status: 401,
                         source: "/login",
                         title: "Wrong password",
