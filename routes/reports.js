@@ -46,7 +46,8 @@ router.post('/',
 /* Check token */
 function checkToken(req, res, next) {
     const token = req.headers['x-access-token'];
-    jwt.verify(token, process.env.JWT_SECRET, function (err, decoded) {
+
+    jwt.verify(token, process.env.JWT_SECRET, function (err) {
         if (err) {
             return res.status(500).json({
                 status: 500,
