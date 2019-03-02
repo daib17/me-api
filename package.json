@@ -1,6 +1,6 @@
 {
     "name": "me-api",
-    "version": "3.0.2",
+    "version": "3.0.4",
     "description": "Me API - Ramverk2",
     "main": "app.js",
     "scripts": {
